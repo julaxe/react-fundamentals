@@ -12,13 +12,24 @@ function UsernameForm({onSubmitUsername}) {
     onSubmitUsername(value);
   }
 
+  const [error, setError] = React.useState(null)
+  function handleChange(event) {
+    const {value} = event.target
+    const isValid = value === value.toLowerCase()
+    setError(isValid ? null : "Username must be lower case")
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="username">Username:</label>
-        <input ref={UsernameInputRef} id ="username" type="text" />
+        <div>
+        <label style={{color: 'red'}} role="alert" className="">{error}</label>
+        </div>
+        
+        <label htmlFor="UserNameInput">Username:</label>
+        <input onChange={handleChange} ref={UsernameInputRef} id ="UserNameInput" type="text" />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={Boolean(error)}>Submit</button>
     </form>
   )
 }
