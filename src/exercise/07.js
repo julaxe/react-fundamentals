@@ -12,14 +12,25 @@ const allItems = [
 
 function App() {
   const [items, setItems] = React.useState(allItems)
+  const [DBitems, setDBItems] = React.useState(allItems)
 
   function addItem() {
     const itemIds = items.map(i => i.id)
-    setItems([...items, allItems.find(i => !itemIds.includes(i.id))])
+    setItems([...items, DBitems.find(i => !itemIds.includes(i.id))])
   }
 
   function removeItem(item) {
     setItems(items.filter(i => i.id !== item.id))
+  }
+
+  function handleChange(event) {
+    const newValue = event.target.value;
+    const idChanged = event.target.id;
+    console.log(event)
+    setDBItems(DBitems.map(item =>({
+      id : item.id,
+      value : item.id === idChanged ? newValue : item.value
+    })))
   }
 
   return (
@@ -30,10 +41,10 @@ function App() {
       <ul style={{listStyle: 'none', paddingLeft: 0}}>
         {items.map(item => (
           // 🐨 add a key prop to the <li> below. Set it to item.id
-          <li>
+          <li key={item.id}>
             <button onClick={() => removeItem(item)}>remove</button>{' '}
-            <label htmlFor={`${item.id}-input`}>{item.value}</label>{' '}
-            <input id={`${item.id}-input`} defaultValue={item.value} />
+            <label htmlFor={`${item.id}`}>{item.value}</label>{' '}
+            <input id={`${item.id}`} defaultValue={item.value} onChange={handleChange} />
           </li>
         ))}
       </ul>
